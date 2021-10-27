@@ -195,7 +195,7 @@ class Dinosaur extends Creature {
     }
 
     compareDiet(diet) {
-        if (this.diet === diet) {
+        if (this.diet.toLowerCase() === diet.toLowerCase()) {
             return 'Diet: same as yours!';
         }
 
