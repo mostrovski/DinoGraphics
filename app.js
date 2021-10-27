@@ -73,34 +73,77 @@ const DATA = [
         fact: 'All birds are living dinosaurs.'
     }
 ];
+
 const INCHES_IN_FOOT = 12;
+
 const inchesToFeet = (inches, feet = 0) => {
-    return (inches / INCHES_IN_FOOT + feet).toFixed(2);
+    inches = parseInt(inches);
+    feet = parseInt(feet);
+
+    return Number((inches / INCHES_IN_FOOT + feet).toFixed(2));
 };
+
 const capitalizeFirstLetter = (string) => {
     return string[0].toUpperCase() + string.substr(1);
 };
+
 const getRandomValue = (array) => {
     return array[Math.floor(Math.random() * array.length)];
 };
 
-// Create Dino Constructor
-class Dinosaur {
+const processFormData = (form, scope) => {
+    let data = {};
+    const entries = new FormData(form).entries();
+
+    for (const keyValue of entries) {
+        let key = keyValue[0];
+        if (scope.includes(key)) {
+            data[key] = keyValue[1];
+        }
+    }
+
+    return data;
+};
+
+class Creature {
     constructor(data) {
-        this.species = data.species;
-        this.weight = data.weight;
-        this.height = data.height;
+        this.species = data.species ?? 'Human';
+        this.weight = parseInt(data.weight);
         this.diet = data.diet;
-        this.where = data.where;
-        this.when = data.when;
-        this.fact = data.fact;
     }
 
     getImageSource() {
         return `images/${this.species.toLowerCase()}.png`;
     }
+}
+
+class Human extends Creature {
+    constructor(data) {
+        super(data);
+        this.name = data.name;
+        this.feet = data.feet;
+        this.inches = data.inches;
+    }
+
+    get height() {
+        return inchesToFeet(this.inches, this.feet);
+    }
+}
+
+class Dinosaur extends Creature {
+    constructor(data) {
+        super(data);
+        this.height = data.height;
+        this.where = data.where;
+        this.when = data.when;
+        this.fact = data.fact;
+    }
 
     presentFact(comparableObject) {
+        if (this.species === 'Pigeon') {
+            return `Fact: ${this.fact}`;
+        }
+
         const fact = this.getRandomFactProperty();
 
         if (['weight', 'height', 'diet'].includes(fact)) {
@@ -160,10 +203,7 @@ class Dinosaur {
     }
 }
 
-// Create Dino Objects
 const dinosaurs = DATA.map(data => new Dinosaur(data));
-
-// Create Human Object
 
 // Generate Tiles for each Dino in Array
 
