@@ -74,8 +74,15 @@ const DATA = [
     }
 ];
 const INCHES_IN_FOOT = 12;
-const inchesToFeet = (inches, feet = 0) => (inches / INCHES_IN_FOOT + feet).toFixed(2);
-const shuffle = array => array.sort(() => Math.random() - 0.5); // https://javascript.info/task/shuffle
+const inchesToFeet = (inches, feet = 0) => {
+    return (inches / INCHES_IN_FOOT + feet).toFixed(2);
+};
+const capitalizeFirstLetter = (string) => {
+    return string[0].toUpperCase() + string.substr(1);
+};
+const getRandomValue = (array) => {
+    return array[Math.floor(Math.random() * array.length)];
+};
 
 // Create Dino Constructor
 class Dinosaur {
@@ -89,7 +96,32 @@ class Dinosaur {
         this.fact = data.fact;
     }
 
-    compareWeight = weight => {
+    presentFact(comparableObject) {
+        const fact = this.getRandomFactProperty();
+
+        if (['weight', 'height', 'diet'].includes(fact)) {
+            const method = this.composeComparisonMethodName(fact);
+
+            return this[method](comparableObject[fact]);
+        }
+
+        return `${capitalizeFirstLetter(fact)}: ${this[fact]}`;
+    }
+
+    getRandomFactProperty() {
+        return getRandomValue(this.scopeFactProperties());
+    }
+
+    scopeFactProperties() {
+        return Object.keys(this)
+            .filter(key => key !== 'species' && typeof this[key] !== 'function');
+    }
+
+    composeComparisonMethodName(attribute) {
+        return `compare${capitalizeFirstLetter(attribute)}`;
+    }
+
+    compareWeight(weight) {
         let diff = this.weight - weight;
 
         if (diff === 0) {
@@ -100,9 +132,9 @@ class Dinosaur {
         }
 
         return `Weight: ${Math.abs(diff)} lbs lighter than you!`;
-    };
+    }
 
-    compareHeight = height => {
+    compareHeight(height) {
         let diff = inchesToFeet(this.height) - height;
 
         if (diff === 0) {
@@ -113,15 +145,15 @@ class Dinosaur {
         }
 
         return `Height: is ${Math.abs(diff)} feet shorter than you!`;
-    };
+    }
 
-    compareDiet = diet => {
+    compareDiet(diet) {
         if (this.diet === diet) {
             return 'Diet: same as yours!';
         }
 
         return `Diet: ${this.diet}`;
-    };
+    }
 }
 
 // Create Dino Objects
