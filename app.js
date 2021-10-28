@@ -105,6 +105,19 @@ const processFormData = (form, scope) => {
     return data;
 };
 
+const generateTile = (creature, comparableObject = {}) => {
+    return `
+        <div class="grid-item">
+            <h3>${creature.name ?? creature.species}</h3>
+            <img src="${creature.getImageSource()}" alt="${creature.species}">
+            <p>${creature.presentFact?.(comparableObject) ?? 'Great Ape'}</p>
+        </div>
+    `;
+};
+
+const $form = document.querySelector('form');
+const $grid = document.querySelector('#grid');
+
 class Creature {
     constructor(data) {
         this.species = data.species ?? 'Human';
@@ -205,10 +218,16 @@ class Dinosaur extends Creature {
 
 const dinosaurs = DATA.map(data => new Dinosaur(data));
 
-// Generate Tiles for each Dino in Array
-
-// Add tiles to DOM
-
-// Remove form from screen
-
-// On button click, prepare and display infographic
+$form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    $form.classList.add('hidden');
+    const human = new Human(processFormData(
+        $form,
+        ['name', 'feet', 'inches', 'weight', 'diet']
+    ));
+    const dinosaurTiles = dinosaurs.map(dinosaur => generateTile(dinosaur, human));
+    const middlePosition = Math.floor(dinosaurTiles.length/2);
+    const allTiles = dinosaurTiles.slice(0, middlePosition)
+        .concat([generateTile(human), ...dinosaurTiles.slice(middlePosition)]);
+    $grid.innerHTML = allTiles.join('');
+});
