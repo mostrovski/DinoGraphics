@@ -76,11 +76,12 @@ const DATA = [
 
 const INCHES_IN_FOOT = 12;
 
-const inchesToFeet = (inches, feet = 0) => {
-    inches = parseInt(inches);
-    feet = parseInt(feet);
+const toPrecision = (number, decimalPoints = 2) => {
+    return Number(number.toFixed(decimalPoints));
+};
 
-    return Number((inches / INCHES_IN_FOOT + feet).toFixed(2));
+const inchesToFeet = (inches, feet = 0) => {
+    return toPrecision(inches / INCHES_IN_FOOT + feet);
 };
 
 const capitalizeFirstLetter = (string) => {
@@ -91,12 +92,18 @@ const getRandomValue = (array) => {
     return array[Math.floor(Math.random() * array.length)];
 };
 
+const insertInTheMiddleOf = (array, element) => {
+    const middle = Math.floor(array.length / 2);
+
+    return array.slice(0, middle).concat([element, ...array.slice(middle)]);
+};
+
 const processFormData = (form, scope) => {
-    let data = {};
+    const data = {};
     const entries = new FormData(form).entries();
 
     for (const keyValue of entries) {
-        let key = keyValue[0];
+        const key = keyValue[0];
         if (scope.includes(key)) {
             data[key] = keyValue[1];
         }
@@ -105,22 +112,9 @@ const processFormData = (form, scope) => {
     return data;
 };
 
-const generateTile = (creature, comparableObject = {}) => {
-    return `
-        <div class="grid-item">
-            <h3>${creature.name ?? creature.species}</h3>
-            <img src="${creature.getImageSource()}" alt="${creature.species}">
-            <p>${creature.presentFact?.(comparableObject) ?? 'Great Ape'}</p>
-        </div>
-    `;
-};
-
-const $form = document.querySelector('form');
-const $grid = document.querySelector('#grid');
-
 class Creature {
     constructor(data) {
-        this.species = data.species ?? 'Human';
+        this.species = data.species || 'Human';
         this.weight = parseInt(data.weight);
         this.diet = data.diet;
     }
@@ -134,12 +128,21 @@ class Human extends Creature {
     constructor(data) {
         super(data);
         this.name = data.name;
-        this.feet = data.feet;
-        this.inches = data.inches;
+        this.feet = parseInt(data.feet);
+        this.inches = parseInt(data.inches);
     }
 
     get height() {
         return inchesToFeet(this.inches, this.feet);
+    }
+
+    renderGraphics() {
+        return `
+            <div class="grid-item">
+                <h3>${this.name}</h3>
+                <img src="${this.getImageSource()}" alt="${this.species}">
+            </div>
+        `;
     }
 }
 
@@ -152,29 +155,13 @@ class Dinosaur extends Creature {
         this.fact = data.fact;
     }
 
-    presentFact(comparableObject) {
-        if (this.species === 'Pigeon') {
-            return `Fact: ${this.fact}`;
-        }
-
-        const fact = this.getRandomFactProperty();
-
-        if (['weight', 'height', 'diet'].includes(fact)) {
-            const method = this.composeComparisonMethodName(fact);
-
-            return this[method](comparableObject[fact]);
-        }
-
-        return `${capitalizeFirstLetter(fact)}: ${this[fact]}`;
+    scopeFactProperties() {
+        return Object.keys(this)
+            .filter(key => key !== 'species' && typeof this[key] !== 'function');
     }
 
     getRandomFactProperty() {
         return getRandomValue(this.scopeFactProperties());
-    }
-
-    scopeFactProperties() {
-        return Object.keys(this)
-            .filter(key => key !== 'species' && typeof this[key] !== 'function');
     }
 
     composeComparisonMethodName(attribute) {
@@ -182,7 +169,7 @@ class Dinosaur extends Creature {
     }
 
     compareWeight(weight) {
-        let diff = this.weight - weight;
+        let diff = toPrecision(this.weight - weight);
 
         if (diff === 0) {
             return 'Weight: just like yours!';
@@ -195,7 +182,7 @@ class Dinosaur extends Creature {
     }
 
     compareHeight(height) {
-        let diff = inchesToFeet(this.height) - height;
+        let diff = toPrecision(inchesToFeet(this.height) - height);
 
         if (diff === 0) {
             return 'Height: is as tall as you!';
@@ -214,20 +201,50 @@ class Dinosaur extends Creature {
 
         return `Diet: ${this.diet}`;
     }
+
+    presentFact(comparableObject) {
+        if (this.species === 'Pigeon') {
+            return `${this.fact}`;
+        }
+
+        const fact = this.getRandomFactProperty();
+
+        if (['weight', 'height', 'diet'].includes(fact)) {
+            const method = this.composeComparisonMethodName(fact);
+
+            return this[method](comparableObject[fact]);
+        }
+
+        return `${capitalizeFirstLetter(fact)}: ${this[fact]}`;
+    }
+
+    renderGraphics(comparableObject) {
+        return `
+            <div class="grid-item">
+                <h3>${this.species}</h3>
+                <img src="${this.getImageSource()}" alt="${this.species}">
+                <p>${this.presentFact(comparableObject)}</p>
+            </div>
+        `;
+    }
 }
 
 const dinosaurs = DATA.map(data => new Dinosaur(data));
 
-$form.addEventListener('submit', (e) => {
-    e.preventDefault();
+// DOM manipulations
+const $form = document.querySelector('form');
+
+$form.addEventListener('submit', (event) => {
+    event.preventDefault();
     $form.classList.add('hidden');
+
     const human = new Human(processFormData(
         $form,
         ['name', 'feet', 'inches', 'weight', 'diet']
     ));
-    const dinosaurTiles = dinosaurs.map(dinosaur => generateTile(dinosaur, human));
-    const middlePosition = Math.floor(dinosaurTiles.length/2);
-    const allTiles = dinosaurTiles.slice(0, middlePosition)
-        .concat([generateTile(human), ...dinosaurTiles.slice(middlePosition)]);
-    $grid.innerHTML = allTiles.join('');
+
+    const dinoGraphics = dinosaurs.map(dinosaur => dinosaur.renderGraphics(human));
+    const allGraphics = insertInTheMiddleOf(dinoGraphics, human.renderGraphics());
+
+    document.querySelector('#grid').innerHTML = allGraphics.join('');
 });

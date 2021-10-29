@@ -25,17 +25,17 @@
             <p>Name:</p>
             <input id="name" class="form-field__full" type="name" name="name" required>
             <p>Height</p>
-            <label>Feet: <input id="feet" class="form-field__short" type="number" name="feet" required></label>
-            <label>inches: <input id="inches" class="form-field__short" type="number" name="inches" required></label>
+            <label>Feet: <input id="feet" class="form-field__short" type="number" name="feet" min="0" required></label>
+            <label>inches: <input id="inches" class="form-field__short" type="number" name="inches" min="0" required></label>
             <p>Weight:</p>
-            <label><input id="weight" class="form-field__full" type="number" name="weight" required>lbs</label>
+            <label><input id="weight" class="form-field__full" type="number" name="weight" min="0" required>lbs</label>
             <p>Diet:</p>
             <select id="diet" class="form-field__full" name="diet" required>
                 <option>Herbivore</option>
                 <option>Omnivore</option>
                 <option>Carnivore</option>
             </select>
-            <button id="btn" type="submit">Compare Me!</button>
+            <input id="btn" type="submit" value="Compare Me!">
         </div>
     </form>
     <!-- .grid to attach tiles to -->
