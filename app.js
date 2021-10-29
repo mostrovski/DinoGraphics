@@ -1,4 +1,3 @@
-// Declare data and helpers
 const DATA = [
     {
         species: 'Triceratops',
@@ -76,28 +75,70 @@ const DATA = [
 
 const INCHES_IN_FOOT = 12;
 
+/**
+ * Helper: get the number with given precision, two by default.
+ * @function
+ * @param {number} number
+ * @param {number} [decimalPoints]
+ * @returns {number}
+ */
 const toPrecision = (number, decimalPoints = 2) => {
     return Number(number.toFixed(decimalPoints));
 };
 
+/**
+ * Helper: convert inches, or inches and feet into feet.
+ * @function
+ * @param {number} inches
+ * @param {number} [feet]
+ * @returns {number}
+ */
 const inchesToFeet = (inches, feet = 0) => {
     return toPrecision(inches / INCHES_IN_FOOT + feet);
 };
 
-const capitalizeFirstLetter = (string) => {
-    return string[0].toUpperCase() + string.substr(1);
+/**
+ * Helper: capitalize the first letter in the given string.
+ * @function
+ * @param {string} word
+ * @returns {string}
+ */
+const capitalizeFirstLetter = (word) => {
+    return word[0].toUpperCase() + word.substr(1);
 };
 
+/**
+ * Helper: get array value at random index.
+ * @function
+ * @param {Array} array
+ * @returns {*}
+ */
 const getRandomValue = (array) => {
     return array[Math.floor(Math.random() * array.length)];
 };
 
+/**
+ * Helper: compose new array with the given element inserted in the middle of
+ * the original array.
+ * @function
+ * @param {Array} array
+ * @param {*} element
+ * @returns {Array}
+ */
 const insertInTheMiddleOf = (array, element) => {
     const middle = Math.floor(array.length / 2);
 
     return array.slice(0, middle).concat([element, ...array.slice(middle)]);
 };
 
+/**
+ * Helper: convert form data to the object. Dismiss key-value pairs that are
+ * out of given scope.
+ * @function
+ * @param {HTMLElement} form
+ * @param {string[]} scope
+ * @returns {Object}
+ */
 const processFormData = (form, scope) => {
     const data = {};
     const entries = new FormData(form).entries();
@@ -112,30 +153,71 @@ const processFormData = (form, scope) => {
     return data;
 };
 
+/**
+ * Container for properties common to humans and dinosaurs.
+ */
 class Creature {
+    /**
+     * Construct creature.
+     * @param {Object} data
+     * @param {(string|undefined)} data.species
+     * @param {(string|number)} data.weight
+     * @param {string} data.diet
+     */
     constructor(data) {
+        /** @type {string} */
         this.species = data.species || 'Human';
+        /** @type {number} */
         this.weight = parseInt(data.weight);
+        /** @type {string} */
         this.diet = data.diet;
     }
 
+    /**
+     * Compose path to the image.
+     * @returns {string}
+     */
     getImageSource() {
         return `images/${this.species.toLowerCase()}.png`;
     }
 }
 
+/**
+ * Class representing Human.
+ * @extends Creature
+ */
 class Human extends Creature {
+    /**
+     * Construct Human.
+     * @param {Object} data
+     * @param {string} data.name
+     * @param {(string|number)} data.feet
+     * @param {(string|number)} data.inches
+     * @param {(string|number)} data.weight
+     * @param {string} data.diet
+     */
     constructor(data) {
         super(data);
+        /** @type {string} */
         this.name = data.name;
+        /** @type {number} */
         this.feet = parseInt(data.feet);
+        /** @type {number} */
         this.inches = parseInt(data.inches);
     }
 
+    /**
+     * Get height property based on feet and inches.
+     * @returns {number}
+     */
     get height() {
         return inchesToFeet(this.inches, this.feet);
     }
 
+    /**
+     * Compose a template string to be appended to the DOM.
+     * @returns {string}
+     */
     renderGraphics() {
         return `
             <div class="grid-item">
