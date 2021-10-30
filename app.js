@@ -76,7 +76,8 @@ const DATA = [
 const INCHES_IN_FOOT = 12;
 
 /**
- * Helper: get the number with given precision, two by default.
+ * Helper: limit decimal points of the given number.
+ *
  * @function
  * @param {number} number
  * @param {number} [decimalPoints]
@@ -88,6 +89,7 @@ const toPrecision = (number, decimalPoints = 2) => {
 
 /**
  * Helper: convert inches, or inches and feet into feet.
+ *
  * @function
  * @param {number} inches
  * @param {number} [feet]
@@ -98,7 +100,8 @@ const inchesToFeet = (inches, feet = 0) => {
 };
 
 /**
- * Helper: capitalize the first letter in the given string.
+ * Helper: capitalize the first letter of the given string.
+ *
  * @function
  * @param {string} word
  * @returns {string}
@@ -109,6 +112,7 @@ const capitalizeFirstLetter = (word) => {
 
 /**
  * Helper: get array value at random index.
+ *
  * @function
  * @param {Array} array
  * @returns {*}
@@ -120,6 +124,7 @@ const getRandomValue = (array) => {
 /**
  * Helper: compose new array with the given element inserted in the middle of
  * the original array.
+ *
  * @function
  * @param {Array} array
  * @param {*} element
@@ -132,8 +137,9 @@ const insertInTheMiddleOf = (array, element) => {
 };
 
 /**
- * Helper: convert form data to the object. Dismiss key-value pairs that are
- * out of given scope.
+ * Helper: convert form data to the digestible object. Ignore key-value pairs
+ * that are out of scope or doubled.
+ *
  * @function
  * @param {HTMLElement} form
  * @param {string[]} scope
@@ -145,7 +151,7 @@ const processFormData = (form, scope) => {
 
     for (const keyValue of entries) {
         const key = keyValue[0];
-        if (scope.includes(key)) {
+        if (scope.includes(key) && !data[key]) {
             data[key] = keyValue[1];
         }
     }
@@ -158,23 +164,40 @@ const processFormData = (form, scope) => {
  */
 class Creature {
     /**
-     * Construct creature.
+     * Construct the instance.
+     *
      * @param {Object} data
      * @param {(string|undefined)} data.species
      * @param {(string|number)} data.weight
      * @param {string} data.diet
      */
     constructor(data) {
-        /** @type {string} */
+        /**
+         * Species: if not provided in data object, human is assumed.
+         *
+         * @type {string}
+         */
         this.species = data.species || 'Human';
-        /** @type {number} */
+
+        /**
+         * Weight in pounds.
+         *
+         * @type {number}
+         */
         this.weight = parseInt(data.weight);
-        /** @type {string} */
+
+        /**
+         * Diet: herbivore, carnivore, or omnivore.
+         *
+         * @type {string}
+         */
         this.diet = data.diet;
     }
 
     /**
-     * Compose path to the image.
+     * Compose relative path to the image: file name corresponds to the
+     * species in the lower case.
+     *
      * @returns {string}
      */
     getImageSource() {
@@ -183,12 +206,14 @@ class Creature {
 }
 
 /**
- * Class representing Human.
+ * A blueprint for the human object.
+ *
  * @extends Creature
  */
 class Human extends Creature {
     /**
-     * Construct Human.
+     * Construct the instance.
+     *
      * @param {Object} data
      * @param {string} data.name
      * @param {(string|number)} data.feet
@@ -198,16 +223,33 @@ class Human extends Creature {
      */
     constructor(data) {
         super(data);
-        /** @type {string} */
+
+        /**
+         * Name.
+         *
+         * @type {string}
+         */
         this.name = data.name;
-        /** @type {number} */
+
+        /**
+         * Height, feet part.
+         *
+         * @type {number}
+         */
         this.feet = parseInt(data.feet);
-        /** @type {number} */
+
+        /**
+         * Height, inches part.
+         *
+         * @type {number}
+         */
         this.inches = parseInt(data.inches);
     }
 
     /**
-     * Get height property based on feet and inches.
+     * Calculate height based on feet and inches.
+     * Getter simplifies comparison of the height properties.
+     *
      * @returns {number}
      */
     get height() {
@@ -215,7 +257,8 @@ class Human extends Creature {
     }
 
     /**
-     * Compose a template string to be appended to the DOM.
+     * Compose a template string representing the object.
+     *
      * @returns {string}
      */
     renderGraphics() {
@@ -228,12 +271,52 @@ class Human extends Creature {
     }
 }
 
+/**
+ * A blueprint for dinosaurs.
+ *
+ * @extends Creature
+ */
 class Dinosaur extends Creature {
+    /**
+     * Construct the instance.
+     *
+     * @param {Object} data
+     * @param {number} data.height
+     * @param {string} data.where
+     * @param {string} data.when
+     * @param {string} data.fact
+     * @param {number} data.weight
+     * @param {string} data.diet
+     */
     constructor(data) {
         super(data);
+
+        /**
+         * Height in inches.
+         *
+         * @type {number}
+         */
         this.height = data.height;
+
+        /**
+         * Where it was/is to find.
+         *
+         * @type {string}
+         */
         this.where = data.where;
+
+        /**
+         * Geological period.
+         *
+         * @type {string}
+         */
         this.when = data.when;
+
+        /**
+         * A fact about the species.
+         *
+         * @type {string}
+         */
         this.fact = data.fact;
     }
 
