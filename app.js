@@ -1,4 +1,4 @@
-const DATA = [
+const DINOSAURS_DATA = [
     {
         species: 'Triceratops',
         weight: 13000,
@@ -6,7 +6,7 @@ const DATA = [
         diet: 'herbivore',
         where: 'North America',
         when: 'Late Cretaceous',
-        fact: 'First discovered in 1889 by Othniel Charles Marsh'
+        fact: 'First discovered in 1889 by Othniel Charles Marsh.'
     },
     {
         species: 'Tyrannosaurus Rex',
@@ -69,7 +69,7 @@ const DATA = [
         diet: 'herbivore',
         where: 'World Wide',
         when: 'Holocene',
-        fact: 'All birds are living dinosaurs.'
+        fact: 'All birds are Dinosaurs.'
     }
 ];
 
@@ -141,7 +141,7 @@ const insertInTheMiddleOf = (array, element) => {
  * that are out of scope or doubled.
  *
  * @function
- * @param {HTMLElement} form
+ * @param {HTMLFormElement} form
  * @param {string[]} scope
  * @returns {Object}
  */
@@ -452,14 +452,13 @@ class Dinosaur extends Creature {
                 <h3>${this.species}</h3>
                 <img src="${this.getImageSource()}" alt="${this.species}">
                 <p>${this.presentFact(comparableObject)}</p>
-                ${this.presentFact}
             </div>
         `;
     }
 }
 
 // While the user is looking around, prepare the dinosaurs.
-const dinosaurs = DATA.map(data => new Dinosaur(data));
+const dinosaurs = DINOSAURS_DATA.map(data => new Dinosaur(data));
 
 // Watch the form - the source of all human in this project.
 const $form = document.querySelector('form');
