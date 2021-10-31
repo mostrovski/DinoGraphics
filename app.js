@@ -1,15 +1,12 @@
 import Dinosaur from './modules/Dinosaur';
 import Human from './modules/Human';
-import { insertInTheMiddleOf, processFormData } from './modules/helpers';
+import { fetchJson, insertInTheMiddleOf, processFormData } from './modules/helpers';
 
 // While the user is looking around, prepare the dinosaurs.
-const dinosaurs = [];
-
-fetch('dinosaurs.json')
-    .then(response => response.json())
-    .then(resource => resource.data.forEach(data => {
-        dinosaurs.push(new Dinosaur(data));
-    }));
+let dinosaurs;
+fetchJson('data/dinosaurs.json').then(json => {
+    dinosaurs = json.data.map(data => new Dinosaur(data));
+});
 
 // Watch the form - the source of all human in this project.
 const $form = document.querySelector('form');

@@ -74,6 +74,7 @@ class Dinosaur extends Creature {
      * For example, for "weight", the "compareWeight" will be returned.
      *
      * @param {string} attribute
+     *
      * @returns {string}
      */
     composeComparisonMethodName(attribute) {
@@ -87,6 +88,7 @@ class Dinosaur extends Creature {
      * a proper message.
      *
      * @param {number} weight
+     *
      * @returns {string}
      */
     compareWeight(weight) {
@@ -109,6 +111,7 @@ class Dinosaur extends Creature {
      * a proper message.
      *
      * @param {number} height
+     *
      * @returns {string}
      */
     compareHeight(height) {
@@ -130,6 +133,7 @@ class Dinosaur extends Creature {
      * Check if the given diet equals to own diet, and return a proper message.
      *
      * @param {string} height
+     *
      * @returns {string}
      */
     compareDiet(diet) {
@@ -151,6 +155,7 @@ class Dinosaur extends Creature {
      * @param {number} comparableObject.weight
      * @param {number} comparableObject.height
      * @param {string} comparableObject.diet
+     *
      * @returns {string}
      */
     presentFact(comparableObject) {
@@ -174,6 +179,7 @@ class Dinosaur extends Creature {
      *
      * @param {Object} comparableObject
      * @see presentFact
+     *
      * @returns {string}
      */
     renderGraphics(comparableObject) {
