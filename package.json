@@ -1,14 +1,15 @@
 {
-  "name": "dinos",
+  "name": "dino-graphics",
   "version": "1.0.0",
-  "description": "## Student Instructions",
+  "description": "A demo project showcasing the work with ES6 classes",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite"
   },
-  "author": "",
+  "author": "Andrei Ostrovskii",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.1.0"
+    "eslint": "^8.1.0",
+    "vite": "^2.6.4"
   }
 }
