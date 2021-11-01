@@ -1,7 +1,7 @@
 {
   "name": "dino-graphics",
   "version": "1.0.0",
-  "description": "A demo project showcasing the work with ES6 classes",
+  "description": "A demo project showcasing work with ES6 classes and modules.",
   "main": "index.html",
   "scripts": {
     "dev": "vite"
