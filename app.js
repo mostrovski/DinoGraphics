@@ -1,10 +1,10 @@
 import Dinosaur from './modules/Dinosaur';
 import Human from './modules/Human';
-import { fetchJson, insertInTheMiddleOf, processFormData } from './modules/helpers';
+import { extractJson, insertInTheMiddleOf, processFormData } from './modules/helpers';
 
 // While the user is looking around, prepare the dinosaurs.
 let dinosaurs;
-fetchJson('data/dinosaurs.json').then(json => {
+extractJson('data/dinosaurs.json').then(json => {
     dinosaurs = json.data.map(data => new Dinosaur(data));
 });
 

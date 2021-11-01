@@ -1,6 +1,6 @@
 # DinoGraphics
 
-## A demo project showcasing the work with ES6 classes.
+## A demo project showcasing work with ES6 classes and modules.
 
 ### Minimum requirements
 
@@ -24,15 +24,15 @@
 
 Dinosaur data suggested the blueprint of the Dinosaur class. For example, the data of the Triceratops was provided as follows:
 
-```JavaScript
+```json
 {
-    species: 'Triceratops',
-    weight: 13000,
-    height: 114,
-    diet: 'herbivore',
-    where: 'North America',
-    when: 'Late Cretaceous',
-    fact: 'First discovered in 1889 by Othniel Charles Marsh.'
+    "species": "Triceratops",
+    "weight": 13000,
+    "height": 114,
+    "diet": "herbivore",
+    "where": "North America",
+    "when": "Late Cretaceous",
+    "fact": "First discovered in 1889 by Othniel Charles Marsh."
 }
 ```
 
@@ -43,7 +43,7 @@ Thus, there was no need in the separate *Bird* class/object. I had to answer the
 - How would I compare the human to the dinosaurs?
 - How would I *randomize* facts shown?
 - At which point would I generate tiles?
-- Which logic would live inside objects, and which - outside?
+- Which logic would live inside entities, and which - outside?
 
 I ended up with the following:
 
@@ -56,16 +56,20 @@ I ended up with the following:
 5. I decided to put as much logic as possible in classes. For example, I made Humans and Dinosaurs responsible for rendering their tiles.
    I had to extract a few helpers along the way, though: they were too generic to fit in with any class.
 
-### Dependencies (built with)
-
-- [HTML](https://www.w3.org/html/)
-- [CSS](https://www.w3.org/Style/CSS/)
-- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-
 ### How to run it
 
-1. Download and extract the repository.
-2. Open *index.html* in the browser.
+1. Clone, or download and extract the repository.
+2. Make sure you have **Node.js** and **npm** [installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+3. In the root of the project, run `npm i` to install the dependencies.
+4. In the root of the project, run `npm run dev` to start the server.
+5. In your terminal, you should see something like this:
+
+   ```bash
+   vite v2.6.13 dev server running at:
+
+   > Local: http://localhost:3000/
+   ```
+6. Open provided link in your browser.
 
 ### Kudos
 

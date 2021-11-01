@@ -106,7 +106,7 @@ export const processFormData = (form, scope) => {
  *
  * @returns {Promise<Object>}
  */
-export const fetchJson = async (resource) => {
+export const extractJson = async (resource) => {
     const response = await fetch(resource);
     const json = await response.json();
 
