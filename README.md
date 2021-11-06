@@ -58,10 +58,10 @@ I ended up with the following:
 
 ### How to run it
 
-1. Clone, or download and extract the repository.
-2. Make sure you have **Node.js** and **npm** [installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
-3. In the root of the project, run `npm i` to install the dependencies.
-4. In the root of the project, run `npm run dev` to start the server.
+1. Make sure you have **Node.js** and **npm** [installed](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+2. Clone, or download and extract the repository.
+3. Change to the root of the project and run `npm i` to install the dependencies.
+4. Run `npm run dev` to start the server powered by [Vite](https://vitejs.dev/).
 5. In your terminal, you should see something like this:
 
    ```bash
